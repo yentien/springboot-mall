@@ -1,5 +1,6 @@
 package com.arthurtien.springbootmall.model;
 
+import com.arthurtien.springbootmall.constant.ProductCategory;
 import lombok.Data;
 
 import java.util.Date;
@@ -7,13 +8,13 @@ import java.util.Date;
 @Data
 public class Product {
 
-    Integer product_id;
-    String product_name;
-    String category;
-    String image_url;
-    Integer price;
-    Integer stock;
-    String description;
-    Date created_date;
-    Date last_modified_date;
+    private Integer product_id;
+    private String product_name;
+    private ProductCategory category;
+    private String image_url;
+    private Integer price;
+    private Integer stock;
+    private String description;
+    private Date created_date;
+    private Date last_modified_date;
 }
