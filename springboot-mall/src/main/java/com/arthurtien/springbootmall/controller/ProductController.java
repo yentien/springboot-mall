@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ProductController {
 
+    // 注入 bean (ProductService 接口)
     @Autowired
     private ProductService productService;
 
@@ -50,7 +51,7 @@ public class ProductController {
     // Update - 修改商品
     // request(要修改的商品id, 修改資料(沿用新增商品時使用的ProductRequest))
     @PutMapping("/products/{productId}")
-    public ResponseEntity<Product> updateProducts(@PathVariable Integer productId,
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                   @RequestBody @Valid ProductRequest productRequest) {
 
         // 檢查 product 是否存在
@@ -65,7 +66,19 @@ public class ProductController {
             // 取得修改過後的商品數據
             Product updateProduct = productService.getProductById(productId);
 
+            // statusCode: 200
             return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
         }
+    }
+
+    // Delete - 刪除商品
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+
+        // 刪除商品
+        productService.deleteProductById(productId);
+
+        // statusCode: 204
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
