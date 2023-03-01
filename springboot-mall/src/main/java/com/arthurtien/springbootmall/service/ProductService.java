@@ -2,6 +2,7 @@ package com.arthurtien.springbootmall.service;
 
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
+import org.springframework.data.relational.core.sql.In;
 
 // ProductService 接口
 // 目的: 降低整體程式對 ProductServiceImpl class 的依賴
@@ -14,5 +15,6 @@ public interface ProductService {
     // 新增商品
     Integer createProduct(ProductRequest productRequest);
 
-
+    // 修改商品
+    void updateProduct(Integer productId, ProductRequest productRequest);
 }

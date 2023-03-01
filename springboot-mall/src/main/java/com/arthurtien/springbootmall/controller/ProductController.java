@@ -46,4 +46,26 @@ public class ProductController {
         // statusCode: 201
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
+
+    // Update - 修改商品
+    // request(要修改的商品id, 修改資料(沿用新增商品時使用的ProductRequest))
+    @PutMapping("/products/{productId}")
+    public ResponseEntity<Product> updateProducts(@PathVariable Integer productId,
+                                                  @RequestBody @Valid ProductRequest productRequest) {
+
+        // 檢查 product 是否存在
+        Product product = productService.getProductById(productId);
+
+        if (product == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            // 修改商品數據, 且不返回值
+            productService.updateProduct(productId, productRequest);
+
+            // 取得修改過後的商品數據
+            Product updateProduct = productService.getProductById(productId);
+
+            return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
+        }
+    }
 }
