@@ -7,6 +7,8 @@ import com.arthurtien.springbootmall.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 // 實作 ProductService 接口
 // 目的: 降低整體程式對 ProductService class 的依賴
@@ -18,6 +20,11 @@ public class ProductServiceImpl implements ProductService {
     // 注入 Bean (productDao 接口)
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public List<Product> getProducts() {
+        return productDao.getProducts();
+    }
 
     @Override
     public Product getProductById(Integer productId) {

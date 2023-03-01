@@ -9,12 +9,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ProductController {
 
     // 注入 bean (ProductService 接口)
     @Autowired
     private ProductService productService;
+
+    // 查詢商品列表
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts() {
+        List<Product> productList = productService.getProducts();
+
+        // 根據RESTful api ,列表型的api, 不管有沒有查到數據, 都要固定返回200給前端
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
+    }
 
     // Read - 單一查詢商品
     @GetMapping("/products/{productId}")
