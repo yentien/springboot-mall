@@ -1,5 +1,6 @@
 package com.arthurtien.springbootmall.service;
 
+import com.arthurtien.springbootmall.constant.ProductCategory;
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 import org.springframework.data.relational.core.sql.In;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface ProductService {
 
     // 查詢商品列表
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory category, String search);
 
     // 查詢單一商品
     Product getProductById(Integer productId);

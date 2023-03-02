@@ -1,9 +1,11 @@
 package com.arthurtien.springbootmall.controller;
 
+import com.arthurtien.springbootmall.constant.ProductCategory;
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 import com.arthurtien.springbootmall.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +22,11 @@ public class ProductController {
 
     // 查詢商品列表
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ) {
+        List<Product> productList = productService.getProducts(category, search);
 
         // 根據RESTful api ,列表型的api, 不管有沒有查到數據, 都要固定返回200給前端
         return ResponseEntity.status(HttpStatus.OK).body(productList);
