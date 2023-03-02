@@ -24,14 +24,21 @@ public class ProductController {
     // 查詢商品列表
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
+            // 查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+
+            // 排序 Sorting
+            @RequestParam(defaultValue = "created_date") String orderBy,   // 排序方式
+            @RequestParam(defaultValue = "desc") String sort             // 升冪降冪, 預設降冪
     ) {
         // 將前端傳入的參數統一放到 ProductQueryParams 的變數裡面
         // 目的: 如果要新增參數不需要從 controller -> service -> dao 一個一個傳遞
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
 
         List<Product> productList = productService.getProducts(productQueryParams);
 
