@@ -1,12 +1,11 @@
 package com.arthurtien.springbootmall.dao.impl;
 
-import com.arthurtien.springbootmall.constant.ProductCategory;
 import com.arthurtien.springbootmall.dao.ProductDao;
+import com.arthurtien.springbootmall.dto.ProductQueryParams;
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 import com.arthurtien.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -31,21 +30,21 @@ public class ProductDaoImpl implements ProductDao {
 
     // 查詢商品列表
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price," +
                 " stock, description, created_date, last_modified_date " +
                 "FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
 
-        if (category != null) {
+        if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category = :category";
-            map.put("category", category.name()); // enum 類型, 使用name()方法轉換成字串
+            map.put("category", productQueryParams.getCategory().name()); // enum 類型, 使用name()方法轉換成字串
         }
 
-        if (search != null) {
+        if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParams.getSearch()  + "%");
         }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());

@@ -1,6 +1,7 @@
 package com.arthurtien.springbootmall.controller;
 
 import com.arthurtien.springbootmall.constant.ProductCategory;
+import com.arthurtien.springbootmall.dto.ProductQueryParams;
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 import com.arthurtien.springbootmall.service.ProductService;
@@ -26,7 +27,13 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search
     ) {
-        List<Product> productList = productService.getProducts(category, search);
+        // 將前端傳入的參數統一放到 ProductQueryParams 的變數裡面
+        // 目的: 如果要新增參數不需要從 controller -> service -> dao 一個一個傳遞
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList = productService.getProducts(productQueryParams);
 
         // 根據RESTful api ,列表型的api, 不管有沒有查到數據, 都要固定返回200給前端
         return ResponseEntity.status(HttpStatus.OK).body(productList);

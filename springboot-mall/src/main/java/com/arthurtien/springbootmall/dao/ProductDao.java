@@ -1,6 +1,7 @@
 package com.arthurtien.springbootmall.dao;
 
 import com.arthurtien.springbootmall.constant.ProductCategory;
+import com.arthurtien.springbootmall.dto.ProductQueryParams;
 import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 
@@ -12,7 +13,7 @@ import java.util.List;
 public interface ProductDao {
 
     // 查詢商品列表
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParams productQueryParams);
 
     // 查詢單一商品
     Product getProductById(Integer productId);
