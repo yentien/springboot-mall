@@ -12,6 +12,9 @@ import java.util.List;
 // hibernate 會自動幫我們創建 bean, 因此不需要使用 @Component
 public interface ProductDao {
 
+    // 查詢商品總數
+    Integer countProduct(ProductQueryParams productQueryParams);
+
     // 查詢商品列表
     List<Product> getProducts(ProductQueryParams productQueryParams);
 
