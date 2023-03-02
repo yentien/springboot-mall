@@ -36,15 +36,7 @@ public class ProductDaoImpl implements ProductDao {
        Map<String, Object> map = new HashMap<>();
 
         // 查詢條件
-        if (productQueryParams.getCategory() != null) {
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParams.getCategory().name()); // enum 類型, 使用name()方法轉換成字串
-        }
-
-        if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch()  + "%");
-        }
+        sql = addfilteringSql(sql, map, productQueryParams);
 
        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 
@@ -61,15 +53,7 @@ public class ProductDaoImpl implements ProductDao {
         Map<String, Object> map = new HashMap<>();
 
         // 查詢條件
-        if (productQueryParams.getCategory() != null) {
-            sql = sql + " AND category = :category";
-            map.put("category", productQueryParams.getCategory().name()); // enum 類型, 使用name()方法轉換成字串
-        }
-
-        if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + productQueryParams.getSearch()  + "%");
-        }
+        sql = addfilteringSql(sql, map, productQueryParams);
 
         // 排序
         // orderBy 的sql語法 只能用字串拼接的方式, 沒辦法用sql變數
@@ -181,5 +165,19 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    private String addfilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams) {
+        if (productQueryParams.getCategory() != null) {
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().name()); // enum 類型, 使用name()方法轉換成字串
+        }
+
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch()  + "%");
+        }
+
+        return sql;
     }
 }
