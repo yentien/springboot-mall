@@ -6,14 +6,18 @@ import com.arthurtien.springbootmall.dto.ProductRequest;
 import com.arthurtien.springbootmall.model.Product;
 import com.arthurtien.springbootmall.service.ProductService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated  // request param 的 @Max & @Min 驗證才會生效
 @RestController
 public class ProductController {
 
@@ -30,7 +34,11 @@ public class ProductController {
 
             // 排序 Sorting
             @RequestParam(defaultValue = "created_date") String orderBy,   // 排序方式
-            @RequestParam(defaultValue = "desc") String sort             // 升冪降冪, 預設降冪
+            @RequestParam(defaultValue = "desc") String sort,             // 升冪降冪, 預設降冪
+
+            // 分頁 Pagination
+            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,     // 要取幾筆數據
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset            // 跳過多少筆數據
     ) {
         // 將前端傳入的參數統一放到 ProductQueryParams 的變數裡面
         // 目的: 如果要新增參數不需要從 controller -> service -> dao 一個一個傳遞
@@ -39,6 +47,8 @@ public class ProductController {
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
         List<Product> productList = productService.getProducts(productQueryParams);
 
