@@ -88,7 +88,6 @@ public class ProductController {
     // Create - 新增商品
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {  // 要加 @Valid, 否則 ProductRequest 的 @NotNull 不會生效
-
         // 新增商品
         Integer productId = productService.createProduct(productRequest);
 
