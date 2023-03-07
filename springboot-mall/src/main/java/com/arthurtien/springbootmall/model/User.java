@@ -1,7 +1,6 @@
 package com.arthurtien.springbootmall.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -17,6 +16,6 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private Date createDate;
+    private Date createdDate;
     private Date lastModifiedDate;
 }
