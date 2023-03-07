@@ -1,6 +1,7 @@
 package com.arthurtien.springbootmall.controller;
 
 
+import com.arthurtien.springbootmall.dto.UserLoginRequest;
 import com.arthurtien.springbootmall.dto.UserRegisterRequest;
 import com.arthurtien.springbootmall.model.User;
 import com.arthurtien.springbootmall.service.UserService;
@@ -18,7 +19,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  @PostMapping("/user/register")
+  @PostMapping("/users/register")
   public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
 
     // 創建帳號, 返回userId
@@ -29,5 +30,12 @@ public class UserController {
 
     // 將創建的數據傳回前端
     return ResponseEntity.status(HttpStatus.CREATED).body(user);
+  }
+
+  @PostMapping("/users/login")
+  public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+    User user = userService.login(userLoginRequest);
+
+    return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 }

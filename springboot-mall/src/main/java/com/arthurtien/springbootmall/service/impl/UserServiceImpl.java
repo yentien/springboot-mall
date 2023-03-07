@@ -1,6 +1,7 @@
 package com.arthurtien.springbootmall.service.impl;
 
 import com.arthurtien.springbootmall.dao.UserDao;
+import com.arthurtien.springbootmall.dto.UserLoginRequest;
 import com.arthurtien.springbootmall.dto.UserRegisterRequest;
 import com.arthurtien.springbootmall.model.User;
 import com.arthurtien.springbootmall.service.UserService;
@@ -36,5 +37,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        if(user == null) {
+            log.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        // 比較string, 需使用.equals(), 不能用==
+        if(user.getPassword().equals(userLoginRequest.getPassword())) {
+            return user;
+        } else {
+            log.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
     }
 }
