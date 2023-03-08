@@ -29,4 +29,7 @@ public interface ProductDao {
 
     // 刪除商品
     void deleteProductById(Integer productId);
+
+    // 更新商品庫存
+    void updateStock(Integer productId, Integer stock);
 }
