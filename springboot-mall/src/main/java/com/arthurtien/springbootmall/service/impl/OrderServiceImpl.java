@@ -4,6 +4,7 @@ import com.arthurtien.springbootmall.dao.OrderDao;
 import com.arthurtien.springbootmall.dao.ProductDao;
 import com.arthurtien.springbootmall.dto.BuyItem;
 import com.arthurtien.springbootmall.dto.CreateOrderRequest;
+import com.arthurtien.springbootmall.model.Order;
 import com.arthurtien.springbootmall.model.OrderItem;
 import com.arthurtien.springbootmall.model.Product;
 import com.arthurtien.springbootmall.service.OrderService;
@@ -22,6 +23,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ProductDao productDao;
+
+    @Override
+    public Order getOrderById(Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+
+        // 訂單數據 + 訂單詳細數據
+        order.setOrderItemList(orderItemList);
+
+        return order;
+    }
 
     @Transactional   // 確保多個資料庫操作 同時新增成功/失敗 (all or never)
     @Override
@@ -52,4 +65,6 @@ public class OrderServiceImpl implements OrderService {
 
         return orderId;
     }
+
+
 }
