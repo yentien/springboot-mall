@@ -1,6 +1,7 @@
 package com.arthurtien.springbootmall.dao.impl;
 
 import com.arthurtien.springbootmall.dao.OrderDao;
+import com.arthurtien.springbootmall.dto.OrderQueryParams;
 import com.arthurtien.springbootmall.model.Order;
 import com.arthurtien.springbootmall.model.OrderItem;
 import com.arthurtien.springbootmall.rowmapper.OrderItemRowMapper;
@@ -23,6 +24,38 @@ public class OrderDaoImpl implements OrderDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date \n" +
+                " FROM `order`" +
+                " WHERE user_id = :userId" +
+                " ORDER BY created_date DESC" +
+                " LIMIT :limit OFFSET :offset;";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", orderQueryParams.getUserId());
+        map.put("limit", orderQueryParams.getLimit());
+        map.put("offset", orderQueryParams.getOffset());
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
+
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT count(*)" +
+                " FROM `order`" +
+                " WHERE user_id = :userId";
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId",orderQueryParams.getUserId());
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return total;
+    }
 
     @Override
     public Order getOrderById(Integer orderId) {
